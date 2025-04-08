@@ -131,6 +131,26 @@ class YouTubeContentExtractor:
             print(f'An error occurred: {e}')
             return False
 
+    def download_transcript_local(self, language='en'):
+        try:
+            transcript = YouTubeTranscriptApi.get_transcript(self.video_id, languages=[language])
+            transcript_text = '\n'.join([item['text'] for item in transcript])
+
+            # Get the video title and sanitize it for use as a filename
+            title = self.get_title()
+            transcript_filename = re.sub(r'\s+', '-', title)  # Replace spaces with hyphens
+            transcript_filename = f"{transcript_filename}.txt"
+
+            # Save the transcript to a local file
+            with open(transcript_filename, 'w', encoding='utf-8') as file:
+                file.write(transcript_text)
+
+            print(f"Transcript saved as {transcript_filename}")
+            return transcript_filename
+        except Exception as e:
+            print(f'An error occurred: {e}')
+            return False
+
     def get_info(self):
         try:
             yt = YouTube(self.url)
