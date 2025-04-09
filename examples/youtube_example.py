@@ -28,7 +28,6 @@ def main():
         logger.info(f"Video File: {video_file}")
 
         # To download transcript:
-        # transcript = extractor.download_transcript()
         transcript = extractor.download_transcript_local()
         logger.info(transcript)
 
